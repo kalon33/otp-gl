@@ -54,8 +54,8 @@ function reverseGeocode(point, id){
   var params = {};
   params.lat = point.lat;
   params.lon = point.lng;
-  params.zoom = '18'
-  params.countrycodes = 'US'
+  params.zoom = '11'
+  params.countrycodes = 'FR'
   params.format = 'json'
   // params.key = this.key;
   // params.components = 'administrative_area:GA|country:US';
@@ -160,7 +160,7 @@ function addMarker(point, title, symbol){
 
 $(document).ready(function(){
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiYXRscmVnaW9uYWwiLCJhIjoiQmZ6d2tyMCJ9.oENm3NSf--qHrimdm9Vvdw';
+mapboxgl.accessToken = 'pk.eyJ1IjoiYmFuZGVya2F0IiwiYSI6ImVOaHNNa0UifQ.WkAeLdchgBBxJvmZ8tk0Yw';
 mapboxgl.util.getJSON('https://www.mapbox.com/mapbox-gl-styles/styles/bright-v4.json', function (err, style) {
   if (err) throw err;
 
@@ -314,9 +314,9 @@ style.layers.push({
 map = new mapboxgl.Map({
   container: 'map', // container id
   style: style, //stylesheet location
-  center: [33.7677129,-84.420604], // starting position
+  center: [48.8588589, 2.3475569], // starting position
   minZoom: 8,
-  zoom: 11 // starting zoom
+  zoom: 10 // starting zoom
 });
 
   map.on('click', mapClick);
@@ -369,14 +369,14 @@ map = new mapboxgl.Map({
 
 
 
-var whitelabel_prefix = 'http://opentrip.atlantaregion.com/otp-rest-servlet/';
+var whitelabel_prefix = 'http://paris.acolytesanonymes.org/';
 
 var whitelabel_minDate = new Date(2014, 02, 08);
 var whitelabel_maxDate = new Date(2020, 03, 30);
 
 var Locale = {}
 
-Locale.dateFormat = 'mm-dd-yy';
+Locale.dateFormat = 'dd-mm-yy';
 Locale.timeFormat = 'h:mma';
 Locale.dateAriaLabel = 'Date, use Ctrl en arrow keys to navigate, enter to choose';
 Locale.loading = "Loading...";
@@ -415,7 +415,7 @@ Locale.autocompleteMessages = {
 
 
 
-var planningserver = whitelabel_prefix+'ws/plan?';
+var planningserver = whitelabel_prefix+'otp/routers/paris/plan?';
 
 String.prototype.lpad = function(padString, length) {
     var str = this;
@@ -490,7 +490,7 @@ var google_geocoder = function( request, response ) {
   var google_url = 'https://maps.googleapis.com/maps/api/geocode/json?address=';
   var key = 'AIzaSyCSEnj3req-uXzLNeFuEgY-57M-AL1nq50'
   $.ajax({
-    url: google_url + request.term + '&components=administrative_area:GA|country:US&sensor=false&key=' + key,
+    url: google_url + request.term + '&components=country:FR&sensor=false&key=' + key,
     dataType: "json",
     success: function( data ) {
       response( $.map( data.results, function( item ) {
@@ -505,11 +505,11 @@ var google_geocoder = function( request, response ) {
 };
 
 var nominatim_geocoder = function(request, response) {
-  this.url = 'http://open.mapquestapi.com/nominatim/v1/search.php?';
+  this.url = 'http://nominatim.openstreetmap.org/search.php?';
   var params = {};
   params.q = request.term
-  params.viewbox = '-84.828,33.316,-83.864,34.297'
-  params.countrycodes = 'US'
+  params.viewport = '-4.4815,41.395,9.1276,52.3893'
+  params.countrycodes = 'fr'
   params.format = 'json'
   // params.key = this.key;
   // params.components = 'administrative_area:GA|country:US';
@@ -521,8 +521,8 @@ var nominatim_geocoder = function(request, response) {
 
       response( $.map( data, function( item ) {
       return {
-        label: item.display_name.split(', Georgia, United States of America')[0],
-        value: item.display_name.split(', Georgia, United States of America')[0],
+        label: item.display_name.split(', France')[0],
+        value: item.display_name.split(', France')[0],
         latlng: item.lat+','+item.lon
         }
       }));
